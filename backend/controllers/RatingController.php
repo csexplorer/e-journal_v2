@@ -8,6 +8,7 @@ use backend\models\RatingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * RatingController implements the CRUD actions for Rating model.
@@ -35,22 +36,45 @@ class RatingController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->request->post('hasEditable'))
+        {
+            $_id=$_POST['editableKey'];
+            $rating = Rating::findOne($_id);
+
+            $out = Json::encode(['output' => '', 'message' => '']);
+            $post = [];
+            $posted = current($_POST['Rating']);
+            $post['Rating'] = $posted;
+
+            if ($rating->load($post))
+            {
+                $rating->save();
+                $output = 'my values';
+                Json::encode(['output' => $output, 'message' => '']);
+            }
+            echo $out;
+            return;
+        }
+
         $group_id = false;
         $subject_id = false;
         $teacher_id = false;
         $student_id = false;
 
-        if (Yii::$app->request->isPost)
-        {
-            $post = Yii::$app->request->post('Rating');
-            $group_id = $post['group_id'];
-            $subject_id = $post['subject_id'];
-            $teacher_id = $post['teacher_id'];
-            $student_id = $post['subject_id'];
-        }
-        $searchModel = new RatingSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $student_id, $group_id, $subject_id, $teacher_id);
+         if (Yii::$app->request->isPost)
+         {
+             $post = Yii::$app->request->post('Rating');
+             $group_id = $post['group_id'];
+             $subject_id = $post['subject_id'];
+             $teacher_id = $post['teacher_id'];
+             // echo "<pre>"; var_dump($teacher_id); exit;
+         }
 
+        $searchModel = new RatingSearch();
+        $dataProvider = $searchModel->search(
+            Yii::$app->request->queryParams, 
+            $group_id, $subject_id, $teacher_id
+        );
         $model = new Rating();
 
         return $this->render('index', [

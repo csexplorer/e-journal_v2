@@ -8,6 +8,8 @@ use backend\models\Students;
 use backend\models\Groups;
 use backend\models\Teachers;
 use backend\models\Subjects;
+use yii\helpers\Url;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\RatingSearch */
@@ -15,17 +17,17 @@ use backend\models\Subjects;
 
 $this->title = 'Ratings';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerCssFile('@web/css/rating.css', [
+    'depends' => [yii\bootstrap\BootstrapAsset::className()]
+]);
+
 ?>
 <div class="rating-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Rating', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     
-
     <div class="row">
         <div class="col-md-12">
             <div class="rating-search-form">
@@ -34,17 +36,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'group_id', [
                         'options' => [
                             'tag' => 'div',
-                            'class' => 'col-md-2'
+                            'class' => 'col-md-2',
                         ]
                     ])->dropDownList(
                         ArrayHelper::map(Groups::find()->all(), 'id', 'name'),
-                        ['prompt' => 'Select Group']
+                        [
+                                'prompt' => 'Select Group',
+                        ]
                     ) ?>
 
                     <?= $form->field($model, 'subject_id', [
                         'options' => [
                             'tag' => 'div',
-                            'class' => 'col-md-2'
+                            'class' => 'col-md-3'
                         ]
                     ])->dropDownList(
                         ArrayHelper::map(Subjects::find()->all(), 'id', 'name'),
@@ -54,15 +58,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'teacher_id', [
                         'options' => [
                             'tag' => 'div',
-                            'class' => 'col-md-2'
+                            'class' => 'col-md-4'
                         ]
                     ])->dropDownList(
                         ArrayHelper::map(Teachers::find()->all(), 'id', 'fullname'),
                         ['prompt' => 'Select Teacher']
                     ) ?>
 
-                    <div class="col-md-4 form-group">
-                        <?= Html::submitButton('Search ', ['class' => 'btn btn-success']) ?>
+                    <div class="col-md-3">
+                        <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span>&nbsp; Search', ['class' => 'btn btn-success btn-block']) ?>
                     </div>
 
                 <?php ActiveForm::end(); ?>
@@ -107,4 +111,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group-justified">
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>&nbsp; Create Groups', ['groups/create'], ['class' => 'btn btn-danger']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>&nbsp; Create Subjects', ['subjects/create'], ['class' => 'btn btn-info']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>&nbsp; Create Teachers', ['teachers/create'], ['class' => 'btn btn-warning']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>&nbsp; Create Students', ['students/create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>&nbsp; Create Subject Teachers', ['subject-teachers/create'], ['class' => 'btn btn-primary']) ?>
+            </div>
+        </div>
+    </div>
 </div>

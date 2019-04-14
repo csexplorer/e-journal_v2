@@ -19,7 +19,6 @@ class RatingSearch extends Rating
         return [
             [['id', 'mark', 'date'], 'integer'],
             [['student_id', 'group_id', 'teacher_id', 'subject_id'], 'safe'],
-            
         ];
     }
 
@@ -39,19 +38,63 @@ class RatingSearch extends Rating
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $student_id, $group_id, $subject_id, $teacher_id)
+    public function search($params, $group_id, $subject_id, $teacher_id)
     {
         $query = Rating::find();
-            // var_dump($group_id);exit();
 
+        // echo "<pre>"; var_dump(!empty($teacher_id)); exit;   
 
-        // add conditions that should always apply here
-
-        if (!empty($group_id) || !empty($subject_id))
+        if (!empty($group_id))
         {
-            $query->where(['group_id' => $group_id, 'subject_id' => $subject_id]);   
-        }
-        
+            if (!empty($subject_id)) 
+            {
+                if (!empty($teacher_id))
+                {
+                    $query->where([
+                        'group_id' => $group_id,
+                        'subject_id' => $subject_id,
+                        'teacher_id' => $teacher_id
+                    ]);
+                } else
+                {
+                    $query->where([
+                        'group_id' => $group_id,
+                        'subject_id' => $subject_id
+                    ]);
+                } 
+            } elseif (!empty($teacher_id))
+            {
+                $query->where(['and',
+                    'group_id = ' . $group_id,
+                    'teacher_id = ' . $teacher_id
+                ]);
+            } else
+            {
+                $query->where([
+                    'group_id' => $group_id
+                ]);
+            } 
+        } elseif (!empty($subject_id))
+        {
+            if (!empty($teacher_id))
+            {
+                $query->where([
+                    'subject_id' => $subject_id,
+                    'teacher_id' => $teacher_id
+                ]);
+            } else 
+            {
+                $query->where([
+                    'subject_id' => $subject_id
+                ]);
+            }
+        } else 
+        {
+            $query->where([
+                'teacher_id' => $teacher_id
+            ]);
+        }        
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

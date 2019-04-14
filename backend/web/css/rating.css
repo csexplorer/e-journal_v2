@@ -1,0 +1,8 @@
+.btn-group-justified .btn {
+	border-radius: 0;
+}
+
+.col-md-3 button[type=submit] {
+	position: absolute;
+	top: 24px;
+}
