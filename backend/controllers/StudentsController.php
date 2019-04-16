@@ -2,7 +2,9 @@
 
 namespace backend\controllers;
 
+use backend\models\GroupSubjects;
 use backend\models\Rating;
+use backend\models\SubjectTeachers;
 use Yii;
 use backend\models\Students;
 use backend\models\StudentsSearch;
@@ -70,10 +72,32 @@ class StudentsController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-            $rating->student_id = $model->id;
-
             $model->save();
-            $rating->save();
+
+            $subjects = GroupSubjects::find()->where(['group_id' => $model->group_id])->all();
+
+            $bulkInsertArray = array();
+
+            foreach($subjects as $subject){
+                $bulkInsertArray[]=[
+                    $rating->student_id = $model->id,
+                    $rating->group_id = $model->group_id,
+                    $rating->subject_id = $subject->subject_id,
+                    $rating->teacher_id = SubjectTeachers::find()->where(['subject_id' => $subject->subject_id])->one()->teacher_id,
+                    $rating->mark = 0,
+                    $rating->date = date('Y-m-d H:m:s'),
+                ];
+            }
+
+            if(count($bulkInsertArray)>0){
+                $columnNameArray=['student_id','group_id','subject_id', 'teacher_id', 'mark', 'date'];
+                // below line insert all your record and return number of rows inserted
+                $insertCount = Yii::$app->db->createCommand()
+                    ->batchInsert(
+                        Rating::tableName(), $columnNameArray, $bulkInsertArray
+                    )
+                    ->execute();
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

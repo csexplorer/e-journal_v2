@@ -32,65 +32,67 @@ $this->registerCssFile('@web/css/rating.css', [
 
     <div class="row">
         <?php $form = ActiveForm::begin(); ?>
-            <?= $form->field($model, 'group_id', [
-                'options' => [
-                    'tag' => 'div',
-                    'class' => 'col-md-2',
-                ]
-            ])->dropDownList(
-                ArrayHelper::map(Groups::find()->all(), 'id', 'name'),
-                [
-                        'prompt' => 'Select Group',
-                ]
-            ) ?>
+        <?= $form->field($model, 'group_id', [
+            'options' => [
+                'tag' => 'div',
+                'class' => 'col-md-2',
+            ]
+        ])->dropDownList(
+            ArrayHelper::map(Groups::find()->all(), 'id', 'name'),
+            [
+                'prompt' => 'Select Group',
+            ]
+        ) ?>
 
-            <?= $form->field($model, 'subject_id', [
-                'options' => [
-                    'tag' => 'div',
-                    'class' => 'col-md-2'
-                ]
-            ])->dropDownList(
-                ArrayHelper::map(Subjects::find()->all(), 'id', 'name'),
-                ['prompt' => 'Select Subject']
-            ) ?>
+        <?= $form->field($model, 'subject_id', [
+            'options' => [
+                'tag' => 'div',
+                'class' => 'col-md-2'
+            ]
+        ])->dropDownList(
+            ArrayHelper::map(Subjects::find()->all(), 'id', 'name'),
+            ['prompt' => 'Select Subject']
+        ) ?>
 
-            <?= $form->field($model, 'teacher_id', [
-                'options' => [
-                    'tag' => 'div',
-                    'class' => 'col-md-4'
-                ]
-            ])->dropDownList(
-                ArrayHelper::map(Teachers::find()->all(), 'id', 'fullname'),
-                ['prompt' => 'Select Teacher']
-            ) ?>
-            <div class="col-md-2">
-                <?= $form->field($model, 'date')->widget(
-                    DatePicker::className(), [
-                        'inline' => false,
-                        // 'template' => '<div></div>',
-                        'clientOptions' => [
-                            'autoclose' => true,
-                            'format' => 'yyyy-m-d'
-                        ]
+        <?= $form->field($model, 'teacher_id', [
+            'options' => [
+                'tag' => 'div',
+                'class' => 'col-md-4'
+            ]
+        ])->dropDownList(
+            ArrayHelper::map(Teachers::find()->all(), 'id', 'fullname'),
+            ['prompt' => 'Select Teacher']
+        ) ?>
+        <div class="col-md-2">
+            <?= $form->field($model, 'date')->widget(
+                DatePicker::className(), [
+                    'inline' => false,
+                    // 'template' => '<div></div>',
+                    'clientOptions' => [
+                        'autoclose' => true,
+                        'format' => 'yyyy-m-d'
                     ]
-                ); ?>
-            </div>
+                ]
+            ); ?>
+        </div>
 
-            <div class="col-md-2">
-                <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span>&nbsp; Search', ['class' => 'btn btn-success btn-block']) ?>
-            </div>
+        <div class="col-md-2">
+            <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span>&nbsp; Search', ['class' => 'btn btn-success btn-block']) ?>
+        </div>
         <?php ActiveForm::end(); ?>
     </div>
 
     <? if ($isPost) { ?>
-
-    <div class="row">
-        <div class="col-md-12">
-            <h4 class="text-center"><strong><em><?= $ratingSearchParams[0] ?></em></strong> guruhi talabalarining <strong><em><?= $ratingSearchParams[1] ?></em></strong> sanasida <strong><em><?= $ratingSearchParams[2] ?></em></strong> fanidan olgan baholari: </h4>
+        <hr style="border: 1px solid red;">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center"><strong><em><?= $ratingSearchParams[0] ?></em></strong> guruhi talabalarining
+                    <strong><em><?= $ratingSearchParams[1] ?></em></strong> sanasida
+                    <strong><em><?= $ratingSearchParams[2] ?></em></strong> fanidan olgan baholari: </h3>
+            </div>
         </div>
-    </div>
-
-<? } ?>
+        <hr style="border: 1px solid red;">
+    <? } ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -121,8 +123,8 @@ $this->registerCssFile('@web/css/rating.css', [
             //     'value' => 'subject.name'
             // ],
             [
-                    'class' => 'kartik\grid\EditableColumn',
-                    'attribute' => 'mark',
+                'class' => 'kartik\grid\EditableColumn',
+                'attribute' => 'mark',
             ],
             // 'date',
 
