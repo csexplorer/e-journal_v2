@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\models\Students;
-use backend\models\Groups;
 use backend\models\Teachers;
 use backend\models\Subjects;
 use dosamigos\datepicker\DatePicker;

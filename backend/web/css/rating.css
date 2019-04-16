@@ -2,7 +2,6 @@
 	border-radius: 0;
 }
 
-.col-md-3 button[type=submit] {
-	position: absolute;
-	top: 24px;
+form#w0 button[type=submit] {
+	margin-top: 24px;
 }

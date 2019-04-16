@@ -17,8 +17,8 @@ class RatingSearch extends Rating
     public function rules()
     {
         return [
-            [['id', 'mark', 'date'], 'integer'],
-            [['student_id', 'group_id', 'teacher_id', 'subject_id'], 'safe'],
+            [['id', 'mark'], 'integer'],
+            [['student_id', 'group_id', 'teacher_id', 'subject_id', 'date'], 'safe'],
         ];
     }
 
@@ -42,11 +42,11 @@ class RatingSearch extends Rating
     {
         $query = Rating::find();
 
-        // echo "<pre>"; var_dump(!empty($teacher_id)); exit;   
+        // echo "<pre>"; var_dump(!empty($teacher_id)); exit;
 
         if (!empty($group_id))
         {
-            if (!empty($subject_id)) 
+            if (!empty($subject_id))
             {
                 if (!empty($teacher_id))
                 {
@@ -61,7 +61,7 @@ class RatingSearch extends Rating
                         'group_id' => $group_id,
                         'subject_id' => $subject_id
                     ]);
-                } 
+                }
             } elseif (!empty($teacher_id))
             {
                 $query->where(['and',
@@ -73,7 +73,7 @@ class RatingSearch extends Rating
                 $query->where([
                     'group_id' => $group_id
                 ]);
-            } 
+            }
         } elseif (!empty($subject_id))
         {
             if (!empty($teacher_id))
@@ -82,18 +82,22 @@ class RatingSearch extends Rating
                     'subject_id' => $subject_id,
                     'teacher_id' => $teacher_id
                 ]);
-            } else 
+            } else
             {
                 $query->where([
                     'subject_id' => $subject_id
                 ]);
             }
-        } else 
+        } else
         {
             $query->where([
                 'teacher_id' => $teacher_id
             ]);
-        }        
+        }
+
+        if (!empty($teacher_id)) {
+
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

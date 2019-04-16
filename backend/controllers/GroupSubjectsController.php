@@ -2,18 +2,17 @@
 
 namespace backend\controllers;
 
-use backend\models\Rating;
 use Yii;
-use backend\models\Students;
-use backend\models\StudentsSearch;
+use backend\models\GroupSubjects;
+use backend\models\GroupSubjectsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * StudentsController implements the CRUD actions for Students model.
+ * GroupSubjectsController implements the CRUD actions for GroupSubjects model.
  */
-class StudentsController extends Controller
+class GroupSubjectsController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +30,12 @@ class StudentsController extends Controller
     }
 
     /**
-     * Lists all Students models.
+     * Lists all GroupSubjects models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new StudentsSearch();
+        $searchModel = new GroupSubjectsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +45,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Displays a single Students model.
+     * Displays a single GroupSubjects model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,32 +58,25 @@ class StudentsController extends Controller
     }
 
     /**
-     * Creates a new Students model.
+     * Creates a new GroupSubjects model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Students();
-        $rating = new Rating();
+        $model = new GroupSubjects();
 
-        if ($model->load(Yii::$app->request->post())) {
-
-            $rating->student_id = $model->id;
-
-            $model->save();
-            $rating->save();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'rating' => $rating
         ]);
     }
 
     /**
-     * Updates an existing Students model.
+     * Updates an existing GroupSubjects model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -104,7 +96,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Deletes an existing Students model.
+     * Deletes an existing GroupSubjects model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -118,15 +110,15 @@ class StudentsController extends Controller
     }
 
     /**
-     * Finds the Students model based on its primary key value.
+     * Finds the GroupSubjects model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Students the loaded model
+     * @return GroupSubjects the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Students::findOne($id)) !== null) {
+        if (($model = GroupSubjects::findOne($id)) !== null) {
             return $model;
         }
 

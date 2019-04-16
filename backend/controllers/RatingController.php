@@ -2,8 +2,11 @@
 
 namespace backend\controllers;
 
+use backend\models\Students;
 use Yii;
 use backend\models\Rating;
+use backend\models\Groups;
+use backend\models\Subjects;
 use backend\models\RatingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -59,21 +62,33 @@ class RatingController extends Controller
         $group_id = false;
         $subject_id = false;
         $teacher_id = false;
-        $student_id = false;
+        $date = false;
+        $isPost = false;
 
-         if (Yii::$app->request->isPost)
-         {
-             $post = Yii::$app->request->post('Rating');
-             $group_id = $post['group_id'];
-             $subject_id = $post['subject_id'];
-             $teacher_id = $post['teacher_id'];
+        $groupName = false;
+        $subjectName = false;
+        $newDate = false;
+        if (Yii::$app->request->isPost)
+        {
+            $post = Yii::$app->request->post('Rating');
+            $group_id = $post['group_id'];
+            $subject_id = $post['subject_id'];
+            $teacher_id = $post['teacher_id'];
+            $date = $post['date'];
+
+            $isPost = true;
+
+            $groupName = Groups::find()->where(['id' => $group_id])->one()->name;
+            $subjectName = Subjects::find()->where(['id' => $subject_id])->one()->name;
+            $newDate = date("d-m-Y", strtotime($date));
+
              // echo "<pre>"; var_dump($teacher_id); exit;
-         }
+        }
 
         $searchModel = new RatingSearch();
         $dataProvider = $searchModel->search(
             Yii::$app->request->queryParams, 
-            $group_id, $subject_id, $teacher_id
+            $group_id, $subject_id, $teacher_id, $date
         );
         $model = new Rating();
 
@@ -81,6 +96,9 @@ class RatingController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'model' => $model,
+            'isPost' => $isPost,
+            'ratingSearchParams' => [$groupName, $newDate, $subjectName],
+            'groupId' => $group_id
         ]);
     }
 

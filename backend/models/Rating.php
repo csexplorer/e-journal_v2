@@ -36,8 +36,9 @@ class Rating extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            // [['student_id', 'group_id', 'teacher_id', 'subject_id', 'mark', 'date'], 'required'],
-            [['student_id', 'group_id', 'teacher_id', 'subject_id', 'mark', 'date'], 'integer'],
+            [['group_id', 'subject_id', 'date'], 'required'],
+            [['student_id', 'group_id', 'teacher_id', 'subject_id', 'mark'], 'integer'],
+            [['date'], 'safe'],
             [['student_id'], 'exist', 'skipOnError' => true, 'targetClass' => Students::className(), 'targetAttribute' => ['student_id' => 'id']],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Groups::className(), 'targetAttribute' => ['group_id' => 'id']],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Teachers::className(), 'targetAttribute' => ['teacher_id' => 'id']],
