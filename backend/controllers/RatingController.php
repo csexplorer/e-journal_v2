@@ -37,20 +37,21 @@ class RatingController extends Controller
      * Lists all Rating models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($group_id = false, $subject_id = false)
     {
         if (Yii::$app->request->post('hasEditable'))
         {
             $_id=$_POST['editableKey'];
             $rating = Rating::findOne($_id);
-
+            
             $out = Json::encode(['output' => '', 'message' => '']);
             $post = [];
             $posted = current($_POST['Rating']);
             $post['Rating'] = $posted;
-
+            
             if ($rating->load($post))
             {
+                
                 $rating->save();
                 $output = 'my values';
                 Json::encode(['output' => $output, 'message' => '']);
@@ -58,48 +59,53 @@ class RatingController extends Controller
             echo $out;
             return;
         }
-
-        $group_id = false;
-        $subject_id = false;
+        
         $teacher_id = false;
         $date = false;
         $isPost = false;
-
-        $groupName = false;
-        $subjectName = false;
-        $newDate = false;
+        
+        
+        
         if (Yii::$app->request->isPost)
         {
             $post = Yii::$app->request->post('Rating');
-            $group_id = $post['group_id'];
-            $subject_id = $post['subject_id'];
             $teacher_id = $post['teacher_id'];
             $date = $post['date'];
-
+            
             $isPost = true;
-
-            $groupName = Groups::find()->where(['id' => $group_id])->one()->name;
-            $subjectName = Subjects::find()->where(['id' => $subject_id])->one()->name;
-            $newDate = date("d-m-Y", strtotime($date));
-
-             // echo "<pre>"; var_dump($teacher_id); exit;
         }
-
+        
         $searchModel = new RatingSearch();
         $dataProvider = $searchModel->search(
-            Yii::$app->request->queryParams, 
+            Yii::$app->request->queryParams,
             $group_id, $subject_id, $teacher_id, $date
-        );
+            );
+        
         $model = new Rating();
-
+        
+        if ($group_id && $subject_id) {
+            $groupName = Groups::find()->where(['id' => $group_id])->one()->name;
+            $subjectName = Subjects::find()->where(['id' => $subject_id])->one()->name;
+            
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'model' => $model,
+                'isPost' => $isPost,
+                'ratingSearchParams' => [$groupName, $subjectName],
+                'groupId' => $group_id
+            ]);
+        }
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'model' => $model,
             'isPost' => $isPost,
-            'ratingSearchParams' => [$groupName, $newDate, $subjectName],
             'groupId' => $group_id
         ]);
+        
+        
     }
 
     /**

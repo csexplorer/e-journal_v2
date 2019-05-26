@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use phpDocumentor\Reflection\Types\This;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "groups".
@@ -13,7 +15,7 @@ use Yii;
  * @property Rating[] $ratings
  * @property Students[] $students
  */
-class Groups extends \yii\db\ActiveRecord
+class Groups extends ActiveRecord
 {
     /**
      * {@inheritdoc}

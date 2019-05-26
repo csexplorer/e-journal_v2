@@ -21,6 +21,10 @@ DashboardAsset::register($this);
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- Icons -->
+    <link rel="icon" href="/backend/web/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/backend/web/favicon.ico" type="image/x-icon" />
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -50,10 +54,6 @@ DashboardAsset::register($this);
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
-    <?= Yii::$app->controller->renderPartial('/blocks/footer') ?>
-
-    <?= Yii::$app->controller->renderPartial('/blocks/rightSidebar') ?>
 
     <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->

@@ -5,3 +5,8 @@
 form#w0 button[type=submit] {
 	margin-top: 24px;
 }
+
+.rating-search-params {
+	margin: 0;
+	padding: 0;
+}

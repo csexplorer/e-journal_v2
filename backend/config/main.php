@@ -11,7 +11,8 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'layout' => 'dashboard',
+    'defaultRoute' => 'groups/group-list',
     'aliases'=> [
         '@runtime' => '@backend/runtime'
     ],

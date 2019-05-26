@@ -1,12 +1,17 @@
+<?php 
+
+use yii\widgets\Breadcrumbs;
+use yii\helpers\Html;
+
+?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Blank page
-    <small>it all starts here</small>
+   	<?= Html::encode($this->title) ?>
   </h1>
-  <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li><a href="#">Examples</a></li>
-    <li class="active">Blank page</li>
-  </ol>
+  <?= Breadcrumbs::widget([
+          'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+      ]);
+  ?>
 </section>
+

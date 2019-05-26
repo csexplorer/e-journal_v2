@@ -28,6 +28,15 @@ class GroupSubjectsController extends Controller
             ],
         ];
     }
+    
+    public function actionGroupSubjects($group_id = false)
+    {
+        $model = GroupSubjects::find()->where(['group_id' => $group_id])->all();
+        
+        return $this->render('group-subjects', [
+            'subjects' => $model
+        ]);
+    }
 
     /**
      * Lists all GroupSubjects models.

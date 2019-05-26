@@ -28,6 +28,12 @@ class GroupsController extends Controller
             ],
         ];
     }
+    
+    public function actionGroupList() {
+        $groups = Groups::find()->all();
+        
+        return $this->render('groups', compact('groups'));
+    }
 
     /**
      * Lists all Groups models.

@@ -28,71 +28,51 @@ $this->registerCssFile('@web/css/rating.css', [
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+	<? if (!empty($ratingSearchParams)) { ?>
+        <hr style="border: 1px solid red;">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center rating-search-params"><strong><em><?= $ratingSearchParams[0] ?></em></strong> guruhi talabalarining
+                    <strong><em><?= $ratingSearchParams[1] ?></em></strong> fanidan olgan baholari: </h3>
+            </div>
+        </div>
+        <hr style="border: 1px solid red;">
+    <? } ?>
 
     <div class="row">
         <?php $form = ActiveForm::begin(); ?>
-        <?= $form->field($model, 'group_id', [
-            'options' => [
-                'tag' => 'div',
-                'class' => 'col-md-2',
-            ]
-        ])->dropDownList(
-            ArrayHelper::map(Groups::find()->all(), 'id', 'name'),
-            [
-                'prompt' => 'Select Group',
-            ]
-        ) ?>
-
-        <?= $form->field($model, 'subject_id', [
-            'options' => [
-                'tag' => 'div',
-                'class' => 'col-md-2'
-            ]
-        ])->dropDownList(
-            ArrayHelper::map(Subjects::find()->all(), 'id', 'name'),
-            ['prompt' => 'Select Subject']
-        ) ?>
 
         <?= $form->field($model, 'teacher_id', [
             'options' => [
                 'tag' => 'div',
-                'class' => 'col-md-4'
+                'class' => 'col-md-4 col-md-offset-2'
             ]
         ])->dropDownList(
             ArrayHelper::map(Teachers::find()->all(), 'id', 'fullname'),
             ['prompt' => 'Select Teacher']
         ) ?>
-        <div class="col-md-2">
-            <?= $form->field($model, 'date')->widget(
-                DatePicker::className(), [
-                    'inline' => false,
-                    // 'template' => '<div></div>',
-                    'clientOptions' => [
-                        'autoclose' => true,
-                        'format' => 'yyyy-m-d'
-                    ]
-                ]
-            ); ?>
-        </div>
+
+        <?= $form->field($model, 'date', [
+            'options' => [
+                'tag' => 'div',
+                'class' => 'col-md-4'
+            ]
+        ])->widget(DatePicker::className(), [
+            // inline too, not bad
+            'inline' => false, 
+             // modify template for custom rendering
+            'template' => '{input}{addon}',
+            'clientOptions' => [
+                'autoclose' => true,
+                'format' => 'dd-mm-yyyy'
+            ]
+        ]);?>
 
         <div class="col-md-2">
             <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span>&nbsp; Search', ['class' => 'btn btn-success btn-block']) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>
-
-    <? if ($isPost) { ?>
-        <hr style="border: 1px solid red;">
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="text-center"><strong><em><?= $ratingSearchParams[0] ?></em></strong> guruhi talabalarining
-                    <strong><em><?= $ratingSearchParams[1] ?></em></strong> sanasida
-                    <strong><em><?= $ratingSearchParams[2] ?></em></strong> fanidan olgan baholari: </h3>
-            </div>
-        </div>
-        <hr style="border: 1px solid red;">
-    <? } ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
